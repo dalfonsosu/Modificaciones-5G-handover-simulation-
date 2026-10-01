@@ -1,7 +1,123 @@
-echo "# Modificaciones-5G-handover-simulation-" >> README.md
-git init
-git add README.md
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/dalfonsosu/Modificaciones-5G-handover-simulation-.git
-git push -u origin main
+MODIFICACIONES INICIALES PARA OBTENER TRACES EN .xscl o .py
+
+#Especificaciones iniciales de la simulación
+F:  28GHz                           ---->        F:  2.4GHz   
+Ch: 100MHz                          ---->        Ch: 100MHz                                DEBIDO A LOS RECURSOS DISPONIBLES
+Tsimulacion= 10 segundos            ---->        Tsimulacion= 0.1 segundos 
+
+
+Primera forma
+en D:\5g-handover-sim\handover-simulator\scenario
+modificar el archivo sc.txt
+
+# Scenario definition file
+
+# Scenario dimensions 
+# MinX MaxX MinY MaxY
+!-400 400 -200 200
+
+# Bands data
+# * Band_ID Central_Frequency_Hz User_Bandwidth_Hz GNB_Bandwidth_Hz
+*0 3.5e9 20e6 400e6
+*1 2.4e9 20e6 20e6        <---------------------------------------------------------------------------[PARÁMETROS DE INTERÉS]
+
+[NO FUNCIONA HACER ESTO POR LO QUE ]
+
+
+cat << 'EOF' > /app/handover-simulator/scenario/sc.txt
+# Scenario definition file
+!-400 400 -200 200
+
+# Bands data
+*0 3.5e9 20e6 400e6
+*1 2.4e9 20e6 20e6                                                                                ___________________________________________________________
+                                                                                                  |
+# gNodeB Data Micro Line (Band 1)                                                                 |
+0 -200.0 50.0 3.0 1 23.0 I                                                                        |            SE CORRE EN LA TERMINAL DE DOCKER (entorno simulación)
+1 -200 -50.0 3.0 1 23.0 I                                                                         |                                                                                        
+2 0.0 50.0 3.0 1 23.0 I
+3 0.0 -50.0 3.0 1 23.0 I
+4 200.0 50.0 3.0 1 23.0 I                                                                                           
+5 200 -50.0 3.0 1 23.0 I
+
+# gNodeB Data Macro Line (Band 0)
+6 0 150.0 20.0 0 53.0 H
+7 0 -150.0 20.0 0 53.0 H
+EOF
+
+
+
+
+
+# Corregir el directorio de ejecutable e imprimir errores en main.py
+
+sed -i "s/process = subprocess.Popen(command, stdout=subprocess.PIPE)/process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd='\/app\/ns-3-dev')/g" /app/handover-simulator/src/main.py
+sed -i 's/line_str = line.decode("utf-8").rstrip()/line_str = line.decode("utf-8").rstrip()\n        print(line_str)/g' /app/handover-simulator/src/main.py
+
+
+_________________________________________________________
+|
+|                      PRIMER
+|      
+|                       ERROR
+|_______________________________________________________
+
+
+Traceback (most recent call last):
+
+  File "/app/handover-simulator/src/main.py", line 475, in <module>
+
+    simDataframes = load_dataframes(traces_sim_folder, nUEs, nGnb)
+
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/app/handover-simulator/src/utils.py", line 200, in load_dataframes
+
+    df = pd.read_csv(file_name)
+
+         ^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
+
+    return _read(filepath_or_buffer, kwds)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
+
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
+
+    self._engine = self._make_engine(f, self.engine)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
+
+    return mapping[engine](f, **self.options)
+
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 93, in __init__
+
+    self._reader = parsers.TextReader(src, **kwds)
+
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "parsers.pyx", line 581, in pandas._libs.parsers.TextReader.__cinit__
+
+pandas.errors.EmptyDataError: No columns to parse from file
+
+root@43b2278ad84b:/app/handover-simulator/src#
+
+
+
+
+
+
+
+
+
