@@ -1,0 +1,7 @@
+echo "# Modificaciones-5G-handover-simulation-" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/dalfonsosu/Modificaciones-5G-handover-simulation-.git
+git push -u origin main
