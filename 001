@@ -19,10 +19,10 @@ modificar el archivo sc.txt
 # Bands data
 # * Band_ID Central_Frequency_Hz User_Bandwidth_Hz GNB_Bandwidth_Hz
 *0 3.5e9 20e6 400e6
-*1 2.4e9 20e6 20e6        <---------------------------------------------------------------------------[PARÁMETROS DE INTERÉS]
+*1 2.4e9 20e6 20e6        <---------------------------------------------------------------------------✅✅[PARÁMETROS DE INTERÉS]
 
 [NO FUNCIONA HACER ESTO POR LO QUE ]
-
+🚩🚩🚩🚩🚩🚩🚩🚩🚩
 
 cat << 'EOF' > /app/handover-simulator/scenario/sc.txt
 # Scenario definition file
@@ -56,11 +56,11 @@ sed -i 's/line_str = line.decode("utf-8").rstrip()/line_str = line.decode("utf-8
 
 
 _________________________________________________________
-|
-|                      PRIMER
-|      
-|                       ERROR
-|_______________________________________________________
+|████████████████████████████████████████████████████████
+|█                      PRIMER                          █
+|█   🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭    █
+|█                       ERROR                          █
+|█████████████████████████████████████████████████████████
 
 
 Traceback (most recent call last):
@@ -109,8 +109,8 @@ Traceback (most recent call last):
 
   File "parsers.pyx", line 581, in pandas._libs.parsers.TextReader.__cinit__
 
-pandas.errors.EmptyDataError: No columns to parse from file
-
+pandas.errors.EmptyDataError: No columns to parse from file       🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨   El error pandas.errors.EmptyDataError significa que la simulación de    
+                                                                  🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨    ns-3 se cerró inmediatamente y generó un archivo traces.csv de 0 bytes (vacío). Al intentar leerlo, Python no encontró columnas ni datos.
 root@43b2278ad84b:/app/handover-simulator/src#
 
 
