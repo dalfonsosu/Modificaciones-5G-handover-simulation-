@@ -25,93 +25,26 @@ modificar el archivo sc.txt
 🚩🚩🚩🚩🚩🚩🚩🚩🚩
 
 cat << 'EOF' > /app/handover-simulator/scenario/sc.txt
-# Scenario definition file
 !-400 400 -200 200
-
-# Bands data
 *0 3.5e9 20e6 400e6
-*1 2.4e9 20e6 20e6                                                                                ___________________________________________________________
-                                                                                                  |
-# gNodeB Data Micro Line (Band 1)                                                                 |
-0 -200.0 50.0 3.0 1 23.0 I                                                                        |            SE CORRE EN LA TERMINAL DE DOCKER (entorno simulación)
-1 -200 -50.0 3.0 1 23.0 I                                                                         |                                                                                        
+*1 2.4e9 20e6 20e6
+0 -200.0 50.0 3.0 1 23.0 I
+1 -200.0 -50.0 3.0 1 23.0 I
 2 0.0 50.0 3.0 1 23.0 I
 3 0.0 -50.0 3.0 1 23.0 I
-4 200.0 50.0 3.0 1 23.0 I                                                                                           
-5 200 -50.0 3.0 1 23.0 I
-
-# gNodeB Data Macro Line (Band 0)
-6 0 150.0 20.0 0 53.0 H
-7 0 -150.0 20.0 0 53.0 H
+4 200.0 50.0 3.0 1 23.0 I
+5 200.0 -50.0 3.0 1 23.0 I
+6 0.0 150.0 20.0 0 53.0 H
+7 0.0 -150.0 20.0 0 53.0 H
 EOF
 
 
 
 
+🚩🚩🚩🚩🚩🚩🚩🚩🚩 ES IMPORTANTE DESACTIVAAR EL AGENTE EN LA SIMULACIÓN.
 
-# Corregir el directorio de ejecutable e imprimir errores en main.py
+sed -i 's/from simulator_gti_dqn import # simulate_gti_dqn_handover/# from simulator_gti_dqn import simulate_gti_dqn_handover/' /app/handover-simulator/src/main.py
 
-sed -i "s/process = subprocess.Popen(command, stdout=subprocess.PIPE)/process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, cwd='\/app\/ns-3-dev')/g" /app/handover-simulator/src/main.py
-sed -i 's/line_str = line.decode("utf-8").rstrip()/line_str = line.decode("utf-8").rstrip()\n        print(line_str)/g' /app/handover-simulator/src/main.py
-
-
-_________________________________________________________
-|████████████████████████████████████████████████████████
-|█                      PRIMER                          █
-|█   🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭🧭    █
-|█                       ERROR                          █
-|█████████████████████████████████████████████████████████
-
-
-Traceback (most recent call last):
-
-  File "/app/handover-simulator/src/main.py", line 475, in <module>
-
-    simDataframes = load_dataframes(traces_sim_folder, nUEs, nGnb)
-
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/app/handover-simulator/src/utils.py", line 200, in load_dataframes
-
-    df = pd.read_csv(file_name)
-
-         ^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1026, in read_csv
-
-    return _read(filepath_or_buffer, kwds)
-
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 620, in _read
-
-    parser = TextFileReader(filepath_or_buffer, **kwds)
-
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1620, in __init__
-
-    self._engine = self._make_engine(f, self.engine)
-
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py", line 1898, in _make_engine
-
-    return mapping[engine](f, **self.options)
-
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "/opt/venv/lib/python3.12/site-packages/pandas/io/parsers/c_parser_wrapper.py", line 93, in __init__
-
-    self._reader = parsers.TextReader(src, **kwds)
-
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-  File "parsers.pyx", line 581, in pandas._libs.parsers.TextReader.__cinit__
-
-pandas.errors.EmptyDataError: No columns to parse from file       🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨   El error pandas.errors.EmptyDataError significa que la simulación de    
-                                                                  🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨    ns-3 se cerró inmediatamente y generó un archivo traces.csv de 0 bytes (vacío). Al intentar leerlo, Python no encontró columnas ni datos.
-root@43b2278ad84b:/app/handover-simulator/src#
 
 
 
